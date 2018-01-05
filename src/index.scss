@@ -1,0 +1,146 @@
+@import 'reset';
+@import 'layout';
+@import 'base';
+
+$duration-ball-gen: 1.2s;
+$duration-ball-fall: 1s;
+$duration-ball-fadeout: 1s;
+$duration-ball-expand: 1s;
+
+@mixin ball ($delay) {
+  animation-name: ball-gen, ball-fall, ball-fadeout;
+  animation-duration: $duration-ball-gen, $duration-ball-fall, $duration-ball-fadeout;
+  animation-delay: calc(#{$delay}), calc(#{$duration-ball-gen} + #{$delay}), calc(#{$duration-ball-gen} + #{$duration-ball-fall} + #{$delay});
+  animation-timing-function: linear, ease-in, ease-out;
+}
+
+.header {
+  background-color: $main-color0;
+  color: $invert-text-color;
+  box-shadow: 0 4px 5px -3px $shadow-color;
+  margin-bottom: 4px;
+}
+
+.sakura-chan {
+  position: relative;
+  margin: 0 auto;
+  width: 30%;
+  cursor: pointer;
+  padding-top: calc(476 / 400 * 30%);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url('./img/sakura-chan.jpg');
+
+  &.inactive {
+    .ball {
+      display: none;
+    }
+  }
+
+  &.active {
+    .ball {
+      position: absolute;
+      width: 0.5em;
+      height: 0.5em;
+      transform: scale(0);
+      transform-origin: center;
+      top: 47%;
+      left: 24%;
+      border-radius: 50%;
+      background: radial-gradient(#69690c, #053205);
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards;
+
+      &-1 {
+        left: 24%;
+        animation-name: ball-gen, ball-fall, ball-expand;
+        animation-duration: $duration-ball-gen, $duration-ball-fall, $duration-ball-expand;
+        animation-delay: 0s, calc(#{$duration-ball-gen}), calc(1s + #{$duration-ball-gen} + #{$duration-ball-fall});
+        animation-timing-function: linear, ease-in, ease-out;
+
+        .content {
+          transform: scale(0);
+          opacity: 0;
+          animation-name: display;
+          animation-duration: 1s;
+          animation-delay: calc(1s + #{$duration-ball-gen} + #{$duration-ball-fall});
+          animation-fill-mode: forwards;
+        }
+      }
+
+      &-2 {
+        left: 23%;
+        @include ball(0.5s);
+      }
+
+      &-3 {
+        left: 25%;
+        @include ball(0.3s);
+      }
+
+      &-4 {
+        left: 23.5%;
+        @include ball(0.4s);
+      }
+
+      &-5 {
+        left: 25%;
+        @include ball(0.2s);
+      }
+
+      &-6 {
+        left: 23.5%;
+        @include ball(0.25s);
+      }
+    }
+  }
+}
+
+@keyframes display {
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes ball-expand {
+  100% {
+    top: 0;
+    left: 0;
+    background: $sub-color2;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+}
+
+@keyframes ball-fadeout {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ball-fall {
+  0% {
+    top: 47%;
+  }
+
+  100% {
+    top: 100%;
+  }
+}
+
+@keyframes ball-gen {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
